@@ -1,0 +1,7 @@
+domain: ""
+www_domain: false
+dockerconfigjson: ""
+frontend:
+  image:
+    name: registry.gitlab.com/junte/api-projector/frontend
+    # tag: dev

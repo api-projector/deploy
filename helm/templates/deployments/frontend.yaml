@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: app
+        image: {{ .Values.frontend.image.name }}:{{ .Values.frontend.image.tag }}
+        resources:
+          limits:
+            memory: 100Mi
+            cpu: 100m
+        readinessProbe:
+          httpGet:
+            path: /en/
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 60
+          failureThreshold: 5
+
