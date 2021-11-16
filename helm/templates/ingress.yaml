@@ -23,3 +23,121 @@ spec:
             name: frontend
             port:
               number: 8080
+      - path: /admin/
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 8080
+      - path: /ht/
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 8080
+      - path: /graphql/
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 8080
+      - path: /api/
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 8080
+      - path: /static/
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 8080
+      - path: /webhooks/
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 8080
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: couchdb
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - host: {{ if .Values.www_domain }}www.{{ end  }}{{ .Values.domain }} 
+    http:
+      paths:
+      - path: /couchdb(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: couchdb-proxy
+            port:
+              number: 8080
+      - path: /couchdb-admin(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: couchdb
+            port:
+              number: 5984
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio
+spec:
+  rules:
+  - host: {{ if .Values.www_domain }}www.{{ end  }}{{ .Values.domain }}
+    http:
+      paths:
+      - path: /minio/
+        pathType: Prefix
+        backend:
+          service:
+            name: minio
+            port:
+              number: 9000
+      - path: /media
+        pathType: Prefix
+        backend:
+          service:
+            name: minio
+            port:
+              number: 9000
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flower
+  annotations:
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+spec:
+  rules:
+  - host: {{ if .Values.www_domain }}www.{{ end  }}{{ .Values.domain }} 
+    http:
+      paths:
+      - path: /admin/flower/
+        pathType: Prefix
+        backend:
+          service:
+            name: flower
+            port:
+              number: 5555

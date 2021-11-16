@@ -1,0 +1,57 @@
+{{- define "backend_env" -}}
+- name: DOMAIN_NAME
+  valueFrom:
+    configMapKeyRef:
+      name: global-config
+      key: domain
+- name: DJANGO_DATABASE_NAME
+  valueFrom:
+    configMapKeyRef:
+      name: postgresql-config
+      key: name
+- name: DJANGO_DATABASE_USER
+  valueFrom:
+    secretKeyRef:
+      name: postgresql-credentials
+      key: user
+- name: DJANGO_DATABASE_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: postgresql-credentials
+      key: password
+- name: DJANGO_DATABASE_HOST
+  valueFrom:
+    configMapKeyRef:
+      name: postgresql-config
+      key: host
+- name: DJANGO_DATABASE_PORT
+  valueFrom:
+    configMapKeyRef:
+      name: postgresql-config
+      key: port
+- name: DJANGO_SECRET_KEY
+  valueFrom:
+    secretKeyRef:
+      name: backend-secrets
+      key: secret_key
+- name: DJANGO_ENV
+  valueFrom:
+    configMapKeyRef:
+      name: backend-config
+      key: env
+- name: MINIO_ENDPOINT
+  valueFrom:
+    configMapKeyRef:
+      name: minio-config
+      key: endpoint
+- name: MINIO_ACCESS_KEY
+  valueFrom:
+    secretKeyRef:
+      name: minio-secrets
+      key: access_key
+- name: MINIO_SECRET_KEY
+  valueFrom:
+    secretKeyRef:
+      name: minio-secrets
+      key: secret_key
+{{- end -}}

@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: spec-projector-couchdb-data
+  labels:
+    storage: couchdb_data
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  local:
+    path: /mnt/volumes/api-projector/couchdb/data
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - worker01
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: spec-projector-couchdb-backup
+  labels:
+    storage: couchdb_backup
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  local:
+    path: /mnt/volumes/api-projector/couchdb/backups
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - worker01
+
+---
+
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: spec-projector-minio
+  labels:
+    storage: minio
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  local:
+    path: /mnt/volumes/spec-projector/minio
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - worker01

@@ -1,0 +1,52 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: couchdb-backup
+spec:
+  schedule: "0 */12 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: couchdb-backup
+              image: junte/couchdb-backup:0.4
+              volumeMounts:
+                - mountPath: /var/data
+                  name: data
+                - mountPath: /var/backups
+                  name: backup
+          volumes:
+            - name: backup
+              persistentVolumeClaim:
+                claimName: couchdb-backup
+            - name: data
+              persistentVolumeClaim:
+                claimName: couchdb-data
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: couchdb-backup-cleanup
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: couchdb-backup-cleanup
+              image: debian:10.7-slim
+              command: ["/bin/sh"]
+              args: ["-c", "find /backups/*.tar.gz -mtime +10 -type f -delete"]
+              volumeMounts:
+                - mountPath: /backups
+                  name: backup
+          volumes:
+            - name: backup
+              persistentVolumeClaim:
+                claimName: couchdb-backup

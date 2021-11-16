@@ -5,3 +5,26 @@ frontend:
   image:
     name: registry.gitlab.com/junte/api-projector/frontend
     # tag: dev
+backend:
+  image:
+    name: registry.gitlab.com/junte/api-projector/backend
+    # tag: dev
+  env: production
+  secret_key: ""
+postgresql:
+  user: api_projector
+  password: ""
+  host: ""
+  port: "6432"
+  name: ""
+couchdb:
+  url: "http://couchdb:5984"
+  user: "" 
+  password: "" 
+minio:
+  endpoint: "minio:9000"
+  access_key: ""
+  secret_key: ""
+basic_auth:
+  user: ""
+  password: ""

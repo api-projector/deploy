@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: couchdb-proxy 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: couchdb-proxy
+  template:
+    metadata:
+      labels:
+        app: couchdb-proxy
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: proxy
+          image: registry.gitlab.com/junte/api-projector/couchdb-proxy:286885559
+          resources:
+            requests:
+              memory: 64m
+              cpu: 10m
+          env:
+            - name: PROXY_COUCHDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-credentials
+                  key: user
+            - name: PROXY_COUCHDB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: couchdb-config
+                  key: url
+            - name: PROXY_PG_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: postgresql-config
+                  key: name
+            - name: PROXY_PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-credentials
+                  key: user
+            - name: PROXY_PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-credentials
+                  key: password
+            - name: PROXY_PG_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgresql-config
+                  key: host
+            - name: PROXY_PG_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgresql-config
+                  key: port

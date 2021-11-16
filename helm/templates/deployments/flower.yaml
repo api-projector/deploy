@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flower
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flower
+  template:
+    metadata:
+      labels:
+        app: flower
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: flower
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 10m
+            limits:
+              memory: 200Mi
+          image: {{ .Values.backend.image.name }}:{{ .Values.backend.image.tag }}
+          command: ["deploy/server/flower.sh"]
+          env:
+            - name: FLOWER_PORT
+              value: "5555"
+            {{- include "backend_env" . | nindent 12 }}

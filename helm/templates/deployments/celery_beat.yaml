@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-beat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: celery-beat
+  template:
+    metadata:
+      labels:
+        app: celery-beat
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: beat
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 10m
+            limits:
+              memory: 200Mi
+          image: {{ .Values.backend.image.name }}:{{ .Values.backend.image.tag }}
+          command: ["./deploy/server/celery_beat.sh"]
+          env:
+          {{- include "backend_env" . | nindent 12 }}

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      volumes:
+        - name: minio-data
+          persistentVolumeClaim:
+            claimName: minio
+      containers:
+        - name: minio
+          image: minio/minio:11725-0d43f31
+          args: [ "server", "/data" ]
+          resources:
+            requests:
+              memory: 100Mi
+              cpu: 10m
+          volumeMounts:
+            - name: minio-data
+              mountPath: /data
+          env:
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secrets
+                  key: access_key
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secrets
+                  key: secret_key
