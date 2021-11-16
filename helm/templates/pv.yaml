@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: spec-projector-couchdb-data
+  name: api-projector-couchdb-data
   labels:
     storage: couchdb_data
 spec:
@@ -28,7 +28,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: spec-projector-couchdb-backup
+  name: api-projector-couchdb-backup
   labels:
     storage: couchdb_backup
 spec:
@@ -56,7 +56,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: spec-projector-minio
+  name: api-projector-minio
   labels:
     storage: minio
 spec:
@@ -68,7 +68,7 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   local:
-    path: /mnt/volumes/spec-projector/minio
+    path: /mnt/volumes/api-projector/minio
   nodeAffinity:
     required:
       nodeSelectorTerms:
