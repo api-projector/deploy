@@ -27,7 +27,7 @@ spec:
           resources:
             requests:
               memory: 100Mi
-              cpu: 100m
+              cpu: 10m
           volumeMounts:
             - name: couchdb-data
               mountPath: /opt/couchdb/data
@@ -37,12 +37,12 @@ spec:
             - name: COUCHDB_USER
               valueFrom:
                 secretKeyRef:
-                  name: couchdb-credentials
+                  name: couchdb-secrets
                   key: user
             - name: COUCHDB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: couchdb-credentials
+                  name: couchdb-secrets
                   key: password
       volumes:
         - name: couchdb-data

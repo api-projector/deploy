@@ -12,12 +12,12 @@
 - name: DJANGO_DATABASE_USER
   valueFrom:
     secretKeyRef:
-      name: postgresql-credentials
+      name: postgresql-secrets
       key: user
 - name: DJANGO_DATABASE_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: postgresql-credentials
+      name: postgresql-secrets
       key: password
 - name: DJANGO_DATABASE_HOST
   valueFrom:
@@ -48,10 +48,25 @@
   valueFrom:
     secretKeyRef:
       name: minio-secrets
-      key: access_key
+      key: user 
 - name: MINIO_SECRET_KEY
   valueFrom:
     secretKeyRef:
       name: minio-secrets
-      key: secret_key
+      key: password 
+- name: COUCHDB_USER 
+  valueFrom:
+    secretKeyRef:
+      name: couchdb-secrets
+      key: user 
+- name: COUCHDB_PASSWORD 
+  valueFrom:
+    secretKeyRef:
+      name: couchdb-secrets
+      key: password 
+- name: COUCHDB_URL 
+  valueFrom:
+    configMapKeyRef:
+      name: couchdb-config 
+      key: url 
 {{- end -}}

@@ -16,7 +16,7 @@ spec:
         - name: regcred
       containers:
         - name: proxy
-          image: registry.gitlab.com/junte/api-projector/couchdb-proxy:286885559
+          image: registry.gitlab.com/junte/api-projector/couchdb-proxy:409886652
           resources:
             requests:
               memory: 64m
@@ -25,7 +25,7 @@ spec:
             - name: PROXY_COUCHDB_USER
               valueFrom:
                 secretKeyRef:
-                  name: couchdb-credentials
+                  name: couchdb-secrets
                   key: user
             - name: PROXY_COUCHDB_URL
               valueFrom:
@@ -40,12 +40,12 @@ spec:
             - name: PROXY_PG_USER
               valueFrom:
                 secretKeyRef:
-                  name: postgresql-credentials
+                  name: postgresql-secrets
                   key: user
             - name: PROXY_PG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgresql-credentials
+                  name: postgresql-secrets
                   key: password
             - name: PROXY_PG_HOST
               valueFrom:

@@ -13,16 +13,15 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   local:
-    path: /mnt/volumes/api-projector/couchdb/data
+    path: /mnt/storage/api-projector/couchdb/data
   nodeAffinity:
     required:
       nodeSelectorTerms:
       - matchExpressions:
-        - key: kubernetes.io/hostname
+        - key: storage 
           operator: In
           values:
-          - worker01
-
+          - "true" 
 ---
 
 apiVersion: v1
@@ -40,15 +39,15 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   local:
-    path: /mnt/volumes/api-projector/couchdb/backups
+    path: /mnt/storage/api-projector/couchdb/backups
   nodeAffinity:
     required:
       nodeSelectorTerms:
       - matchExpressions:
-        - key: kubernetes.io/hostname
+        - key: storage 
           operator: In
           values:
-          - worker01
+          - "true" 
 
 ---
 
@@ -68,12 +67,12 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   local:
-    path: /mnt/volumes/api-projector/minio
+    path: /mnt/storage/api-projector/minio
   nodeAffinity:
     required:
       nodeSelectorTerms:
       - matchExpressions:
-        - key: kubernetes.io/hostname
+        - key: storage 
           operator: In
           values:
-          - worker01
+          - "true" 

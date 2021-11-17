@@ -65,6 +65,13 @@ spec:
             name: backend
             port:
               number: 8080
+      - path: /media
+        pathType: Prefix
+        backend:
+          service:
+            name: minio
+            port:
+              number: 9000
 ---
 
 apiVersion: networking.k8s.io/v1
@@ -99,20 +106,46 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: minio
+  name: minio-console
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
+  tls:
+  - hosts:
+    - {{ .Values.minio.console_domain }}
+    secretName: tls-minio-console
   rules:
-  - host: {{ if .Values.www_domain }}www.{{ end  }}{{ .Values.domain }}
+  - host: {{ .Values.minio.console_domain }} 
     http:
       paths:
-      - path: /minio/
+      - path: /
         pathType: Prefix
         backend:
           service:
-            name: minio
+            name: minio-console
             port:
-              number: 9000
-      - path: /media
+              number: 9001
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio-server
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.minio.domain }}
+    secretName: tls-minio-server
+  rules:
+  - host: {{ .Values.minio.domain }} 
+    http:
+      paths:
+      - path: /
         pathType: Prefix
         backend:
           service:

@@ -1,0 +1,2 @@
+export K8S_NAMESPACE=api-projector
+export HELM_RELEASE=api-projector

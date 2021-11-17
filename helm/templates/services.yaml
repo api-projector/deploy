@@ -85,6 +85,20 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: minio-console
+spec:
+  selector:
+    app: minio
+  ports:
+    - protocol: TCP
+      port: 9001
+  type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
   name: flower
 spec:
   selector:
