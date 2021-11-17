@@ -17,8 +17,6 @@ frontend:
 minio:
   user: 9UHm7S9qUzLwDZG8jmuf5UQRQzFfRp5x 
   password: nc7pjfurg32N8TKFgmvbfSbU2Cdzz36a 
-  domain: minio.apiprojector.com
-  console_domain: s3.apiprojector.com
 basic_auth:
   user: admin
   password: TtqjsGAcCe6FX 

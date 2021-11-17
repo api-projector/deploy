@@ -18,8 +18,8 @@ spec:
             claimName: minio
       containers:
         - name: minio
-          image: minio/minio:13580-51c3fed
-          args: [ "server", "--console-address", ":9001", "/data" ]
+          image: minio/minio:11725-0d43f31
+          args: [ "server", "/data" ]
           resources:
             requests:
               memory: 100Mi
@@ -28,14 +28,12 @@ spec:
             - name: minio-data
               mountPath: /data
           env:
-            - name: CONSOLE_SECURE_TLS_REDIRECT
-              value: "false"
-            - name: MINIO_ROOT_USER 
+            - name: MINIO_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
                   name: minio-secrets
                   key: user 
-            - name: MINIO_ROOT_PASSWORD 
+            - name: MINIO_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: minio-secrets
