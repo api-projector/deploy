@@ -16,7 +16,7 @@ spec:
         - name: regcred
       containers:
         - name: proxy
-          image: registry.gitlab.com/junte/api-projector/couchdb-proxy:409886652
+          image: registry.gitlab.com/junte/api-projector/couchdb-proxy:420493138
           resources:
             requests:
               memory: 64m
