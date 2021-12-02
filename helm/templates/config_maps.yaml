@@ -33,6 +33,7 @@ metadata:
   name: backend-config
 data:
   env: {{ .Values.backend.env }}
+  sentry: {{ .Values.backend.sentry | quote }}
 
 ---
 

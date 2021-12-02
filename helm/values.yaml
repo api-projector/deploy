@@ -11,6 +11,7 @@ backend:
     # tag: dev
   env: production
   secret_key: ""
+  sentry: ""
 postgresql:
   user: api_projector
   password: ""

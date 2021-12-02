@@ -4,6 +4,7 @@ backend:
   image:
     name: registry.gitlab.com/junte/api-projector/backend/unstable
   secret_key: e3VYcxRp8eEhLW6CLaSS3XRNcmhsBjLS 
+  sentry: https://9b3f7a83cb744d9dbef128ed955f2cd4@sentry.junte.ru/8
 postgresql:
   password: LhP2YgZN4N6mu 
   host: pgbouncer.postgres.svc.cluster.local

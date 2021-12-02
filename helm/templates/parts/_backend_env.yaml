@@ -69,4 +69,9 @@
     configMapKeyRef:
       name: couchdb-config 
       key: url 
+- name: DJANGO_SENTRY_DSN
+  valueFrom:
+    configMapKeyRef:
+      name: backend-config
+      key: sentry
 {{- end -}}
