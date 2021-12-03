@@ -14,7 +14,7 @@ spec:
     spec:
       initContainers:
         - name: init-copy
-          image:  couchdb:2.3 
+          image:  couchdb:3.1.1
           command: ['sh','-c','cp /tmp/*.ini /local.d; ls -lrt /local.d;']
           volumeMounts:
             - name: couchdb-config
