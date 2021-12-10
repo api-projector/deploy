@@ -74,4 +74,15 @@
     configMapKeyRef:
       name: backend-config
       key: sentry
+- name: DJANGO_SOCIAL_AUTH_GOOGLE_KEY
+  valueFrom:
+    secretKeyRef:
+      name: backend-secrets
+      key: social_auth_google_key
+
+- name: DJANGO_SOCIAL_AUTH_GOOGLE_SECRET
+  valueFrom:
+    secretKeyRef:
+      name: backend-secrets
+      key: social_auth_google_secret
 {{- end -}}
