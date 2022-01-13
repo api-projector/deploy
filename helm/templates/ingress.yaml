@@ -30,6 +30,13 @@ spec:
             name: backend
             port:
               number: 8080
+      - path:  /projects/[0-9a-zA-Z]+/export/openapi.(yaml|json)
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 8080
       - path: /ht/
         pathType: Prefix
         backend:
