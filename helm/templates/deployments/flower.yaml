@@ -19,9 +19,9 @@ spec:
           resources:
             requests:
               memory: 50Mi
-              cpu: 10m
+              cpu: 5m
             limits:
-              memory: 200Mi
+              memory: 128Mi
           image: {{ .Values.backend.image.name }}:{{ .Values.backend.image.tag }}
           command: ["deploy/server/flower.sh"]
           env:

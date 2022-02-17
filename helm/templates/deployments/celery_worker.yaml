@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: celery-worker
 spec:
-  replicas: 1
+  replicas: {{ .Values.backend.celery_replicas }} 
   selector:
     matchLabels:
       app: celery-worker
@@ -21,10 +21,8 @@ spec:
               memory: 50Mi
               cpu: 10m
             limits:
-              memory: 500Mi
+              memory: 256Mi
           image: {{ .Values.backend.image.name }}:{{ .Values.backend.image.tag }}
           command: ["deploy/server/celery_worker.sh"]
           env:
-            - name: CELERY_CONCURRENCY
-              value: "2"
           {{- include "backend_env" . | nindent 12 }}

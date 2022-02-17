@@ -3,6 +3,8 @@ dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL3JlZ2lzdHJ5LmdpdGxhYi5jb20iOnsidXNlcm
 backend:
   image:
     name: registry.gitlab.com/junte/api-projector/backend/unstable
+  api_replicas: 4
+  celery_replicas: 2
   secret_key: e3VYcxRp8eEhLW6CLaSS3XRNcmhsBjLS 
   sentry: https://9b3f7a83cb744d9dbef128ed955f2cd4@sentry.junte.ru/8
   social_auth_google_key: 699779544959-nvp72qh440mtv33m8d8nffh1d8578se4.apps.googleusercontent.com

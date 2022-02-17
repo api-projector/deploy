@@ -6,6 +6,8 @@ frontend:
     name: registry.gitlab.com/junte/api-projector/frontend
     # tag: dev
 backend:
+  api_replicas: 1
+  celery_replicas: 1
   image:
     name: registry.gitlab.com/junte/api-projector/backend
     # tag: dev
