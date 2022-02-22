@@ -2,9 +2,12 @@ name: Lint and Test Charts
 
 on: [pull_request, push]
 
+env:
+  CHARTS_DIR: helm
+
 jobs:
   lint-test:
-    runs-on: ubuntu-20.04 
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -26,17 +29,17 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed)
+          changed=$(ct --chart-dirs ${{ env.CHARTS_DIR }} list-changed)
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
           fi
 
       - name: Run chart-testing (lint)
-        run: ct lint
+        run: ct --chart-dirs ${{ env.CHARTS_DIR }} lint
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.2.0
         if: steps.list-changed.outputs.changed == 'true'
 
       - name: Run chart-testing (install)
-        run: ct install
+        run: ct --chart-dirs ${{ env.CHARTS_DIR }} install
