@@ -23,6 +23,6 @@ spec:
             limits:
               memory: 128Mi
           image: {{ .Values.backend.image.name }}:{{ .Values.backend.image.tag }}
-          command: ["./deploy/server/celery_beat.sh"]
+          command: ["./docker/server/celery_beat.sh"]
           env:
           {{- include "backend_env" . | nindent 12 }}

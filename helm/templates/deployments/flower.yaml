@@ -23,7 +23,7 @@ spec:
             limits:
               memory: 128Mi
           image: {{ .Values.backend.image.name }}:{{ .Values.backend.image.tag }}
-          command: ["deploy/server/flower.sh"]
+          command: ["docker/server/flower.sh"]
           env:
             - name: FLOWER_PORT
               value: "5555"

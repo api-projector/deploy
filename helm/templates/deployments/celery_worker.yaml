@@ -23,6 +23,6 @@ spec:
             limits:
               memory: 256Mi
           image: {{ .Values.backend.image.name }}:{{ .Values.backend.image.tag }}
-          command: ["deploy/server/celery_worker.sh"]
+          command: ["docker/server/celery_worker.sh"]
           env:
           {{- include "backend_env" . | nindent 12 }}
