@@ -12,14 +12,12 @@ spec:
       labels:
         app: frontend
     spec:
-      imagePullSecrets:
-      - name: regcred
       containers:
       - name: app
         image: {{ .Values.frontend.image.name }}:{{ .Values.frontend.image.tag }}
         resources:
           limits:
-            memory: 8Mi
+            memory: 16Mi
             cpu: 5m
         readinessProbe:
           httpGet:

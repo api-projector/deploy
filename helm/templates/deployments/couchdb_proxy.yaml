@@ -12,11 +12,9 @@ spec:
       labels:
         app: couchdb-proxy
     spec:
-      imagePullSecrets:
-        - name: regcred
       containers:
         - name: proxy
-          image: registry.gitlab.com/junte/api-projector/couchdb-proxy:420493138
+          image: ghcr.io/api-projector/couchdb-proxy:sha-31ad09e 
           resources:
             requests:
               memory: 64m

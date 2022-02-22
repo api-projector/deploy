@@ -3,13 +3,13 @@ www_domain: false
 dockerconfigjson: ""
 frontend:
   image:
-    name: registry.gitlab.com/junte/api-projector/frontend
+    name: ghcr.io/api-projector/frontend 
     # tag: dev
 backend:
   api_replicas: 1
   celery_replicas: 1
   image:
-    name: registry.gitlab.com/junte/api-projector/backend
+    name: ghcr.io/api-projector/backend
     # tag: dev
   env: production
   secret_key: ""
