@@ -17,6 +17,7 @@ x-backend:
     - COUCHDB_USER=${COUCHDB_USER}
     - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
     - COUCHDB_URL=http://couchdb:5984
+    - DOMAIN_NAME=${DOMAIN_NAME}
   depends_on:
     postgres:
       condition: service_healthy
@@ -48,15 +49,30 @@ services:
     restart: unless-stopped
     networks:
       - backend
-  nginx:
-    image: nginx:1.21.6
+        #  nginx:
+        # image: nginx:1.21.6
+        #    restart: unless-stopped
+        #    networks:
+        #      - frontend
+        #    ports:
+        #      - 8888:8080
+        #    volumes:
+        #      - ${PWD}/nginx:/etc/nginx
+        #
+  caddy:
+    image: caddy:2.4.6
     restart: unless-stopped
     networks:
       - frontend
     ports:
-      - 8888:8080
+      - 80:80
+      - 443:443
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME} 
     volumes:
-      - ${PWD}/nginx:/etc/nginx
+      - ${PWD}/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+
   couchdb:
     image: couchdb:3.1.1
     restart: unless-stopped
@@ -100,8 +116,6 @@ services:
       - backend
   celery_beat:
     <<: *backend
-    volumes:
-      - beat_data:/var/run/app
     command: docker/server/celery_beat.sh
     networks:
       - backend
@@ -116,7 +130,7 @@ volumes:
   pg_data:
   couchdb_data:
   media_data:
-  beat_data:
+  caddy_data:
 
 networks:
   frontend: {}

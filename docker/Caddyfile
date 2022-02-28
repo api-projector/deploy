@@ -1,0 +1,27 @@
+{$DOMAIN_NAME} {
+    reverse_proxy /*                http://frontend:8080
+    reverse_proxy /admin/*          http://backend:8080
+    reverse_proxy /ht/              http://backend:8080
+    reverse_proxy /graphql/*        http://backend:8080
+    reverse_proxy /api/*            http://backend:8080
+    reverse_proxy /static/*         http://backend:8080
+    reverse_proxy /media/*          http://backend:8080
+    reverse_proxy /admin/flower/*   http://flower:5555
+
+    @project_export {
+        path_regexp /projects/[0-9a-zA-Z]+/export/openapi.(yaml|json)$
+    }
+    route @project_export {
+       reverse_proxy backend:8080
+    }
+
+    route /couchdb* {
+        uri strip_prefix /couchdb
+        reverse_proxy http://couchdb_proxy:8080
+    }
+
+    route /couchdb-admin* {
+        uri strip_prefix /couchdb-admin
+        reverse_proxy http://couchdb:5984
+    }
+}
