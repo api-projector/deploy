@@ -1,6 +1,5 @@
 domain: ""
 www_domain: false
-dockerconfigjson: ""
 frontend:
   image:
     name: ghcr.io/api-projector/frontend 
