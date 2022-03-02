@@ -49,16 +49,6 @@ services:
     restart: unless-stopped
     networks:
       - backend
-        #  nginx:
-        # image: nginx:1.21.6
-        #    restart: unless-stopped
-        #    networks:
-        #      - frontend
-        #    ports:
-        #      - 8888:8080
-        #    volumes:
-        #      - ${PWD}/nginx:/etc/nginx
-        #
   caddy:
     image: caddy:2.4.6
     restart: unless-stopped
