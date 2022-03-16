@@ -1,6 +1,15 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: global-config
+data:
+  domain: {{ if .Values.www_domain }}www.{{ end  }}{{ .Values.domain }}
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: postgresql-config
 data:
   name: {{ .Values.postgresql.name }} 
@@ -14,16 +23,7 @@ kind: ConfigMap
 metadata:
   name: couchdb-config
 data:
-  url: {{ .Values.couchdb.url }} 
-
----
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: global-config
-data:
-  domain: {{ if .Values.www_domain }}www.{{ end  }}{{ .Values.domain }} 
+  url: {{ .Values.couchdb.url }}
 
 ---
 
@@ -52,4 +52,3 @@ metadata:
   name: minio-config
 data:
   endpoint: {{ .Values.minio.endpoint }}
-  domain: {{ .Values.minio.domain }}

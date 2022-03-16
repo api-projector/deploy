@@ -3,8 +3,6 @@
 set -o errexit
 set -o nounset
 
-cd /opt/junte/services/api-projector/deploy/helm
-
 RELEASE_PATH="./releases/${1}"
 
 source ${RELEASE_PATH}/env
