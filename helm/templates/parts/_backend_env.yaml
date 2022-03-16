@@ -85,4 +85,6 @@
     secretKeyRef:
       name: backend-secrets
       key: social_auth_google_secret
+- name: DJANGO_DEFAULT_FILE_STORAGE
+  value: minio_storage.storage.MinioMediaStorage
 {{- end -}}

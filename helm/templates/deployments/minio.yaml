@@ -18,7 +18,7 @@ spec:
             claimName: minio
       containers:
         - name: minio
-          image: minio/minio:11725-0d43f31
+          image: minio/minio:14128-5ee91dc
           args: [ "server", "/data" ]
           resources:
             requests:
