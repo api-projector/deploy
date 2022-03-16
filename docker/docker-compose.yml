@@ -1,0 +1,126 @@
+version: '2.4'
+
+x-backend:
+  &backend
+  restart: unless-stopped
+  image: ghcr.io/api-projector/backend:${BACKEND_TAG}
+  volumes:
+    - ${PWD}/media:/var/www/media
+  env_file:
+    - backend.env
+  environment:
+    - DJANGO_DATABASE_NAME=${POSTGRES_DB}
+    - DJANGO_DATABASE_USER=${POSTGRES_USER}
+    - DJANGO_DATABASE_PASSWORD=${POSTGRES_PASSWORD}
+    - DJANGO_DATABASE_HOST=postgres
+    - DJANGO_ENV=production
+    - COUCHDB_USER=${COUCHDB_USER}
+    - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+    - COUCHDB_URL=http://couchdb:5984
+    - DOMAIN_NAME=${DOMAIN_NAME}
+  depends_on:
+    postgres:
+      condition: service_healthy
+
+services:
+  postgres:
+    image: postgres:14
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - backend
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  redis:
+    image: redis:5
+    restart: unless-stopped
+    networks:
+      - backend
+  memcached:
+    image: memcached:1.6
+    restart: unless-stopped
+    networks:
+      - backend
+  caddy:
+    image: caddy:2.4.6
+    restart: unless-stopped
+    networks:
+      - frontend
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME} 
+    volumes:
+      - ${PWD}/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+
+  couchdb:
+    image: couchdb:3.1.1
+    restart: unless-stopped
+    networks:
+      - frontend
+      - backend
+    volumes:
+      - couchdb_data:/opt/couchdb/data
+      - ${PWD}/couchdb:/opt/couchdb/etc/local.d
+    environment:
+      - COUCHDB_USER=${COUCHDB_USER}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+  couchdb_proxy:
+    image: ghcr.io/api-projector/couchdb-proxy:${COUCHDB_PROXY_TAG}
+    restart: unless-stopped
+    networks:
+      - frontend
+      - backend
+    environment:
+      - PROXY_COUCHDB_USER=${COUCHDB_USER}
+      - PROXY_COUCHDB_URL=http://couchdb:5984
+      - PROXY_PG_DATABASE=${POSTGRES_DB}
+      - PROXY_PG_USER=${POSTGRES_USER}
+      - PROXY_PG_PASSWORD=${POSTGRES_PASSWORD}
+      - PROXY_PG_HOST=postgres
+      - PROXY_PG_PORT=5432
+  frontend:
+    image: ghcr.io/api-projector/frontend:${FRONTEND_TAG}
+    restart: unless-stopped
+    networks:
+      - frontend
+  backend:
+    <<: *backend
+    networks:
+      - backend
+      - frontend
+  celery_worker:
+    <<: *backend
+    command: docker/server/celery_worker.sh
+    networks:
+      - backend
+  celery_beat:
+    <<: *backend
+    command: docker/server/celery_beat.sh
+    networks:
+      - backend
+  flower:
+    <<: *backend
+    command: docker/server/flower.sh
+    networks:
+      - backend
+      - frontend
+
+volumes:
+  pg_data:
+  couchdb_data:
+  caddy_data:
+
+networks:
+  frontend: {}
+  backend: {}
