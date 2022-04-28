@@ -17,7 +17,7 @@ spec:
           image: ghcr.io/api-projector/couchdb-proxy:sha-31ad09e 
           resources:
             requests:
-              memory: 64m
+              memory: 64Mi
               cpu: 10m
           env:
             - name: PROXY_COUCHDB_USER
